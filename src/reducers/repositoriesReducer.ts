@@ -12,18 +12,37 @@ export interface RepositoriesReducerState {
 
 // actions interfaces
 interface SearchRepositoriesAction {
-  type: 'search_repositories';
+  type: ActionType.SEARCH_REPOSITORIES;
 }
 
 interface SearchRepositoriesSuccessAction {
-  type: 'search_repositories_success';
+  type: ActionType.SEARCH_REPOSITORIES_SUCCESS;
   payload: string[];
 }
 
 interface SearchRepositoriesErrorAction {
-  type: 'search_repositories_error';
+  type: ActionType.SEARCH_REPOSITORIES_ERROR;
   payload: string;
 }
+
+// NOTE: 'Type union' can be very long, we can use 'Type Alias' if we want instead.
+// 'Type Alias' is just a name that represents another Type, similar to variable but for type.
+// 'Type Alias' is to create New Name for another Type.
+type Action =
+  | SearchRepositoriesAction
+  | SearchRepositoriesSuccessAction
+  | SearchRepositoriesErrorAction;
+
+// Enums for all action types.
+// Enum is an object for small fixed set of values which are closely related.
+// It's like a SET of some small values.
+export enum ActionType {
+  SEARCH_REPOSITORIES = 'search_repositories',
+  SEARCH_REPOSITORIES_SUCCESS = 'search_repositories_success',
+  SEARCH_REPOSITORIES_ERROR = 'search_repositories_error',
+}
+// Now, we can use this enum 'ActionType' to access all these Action Types rather then writing raw strings
+// which is bad as we are duplicating strings & easily can make typos.
 
 // initial reducer state
 const initialState = {
@@ -46,13 +65,8 @@ export const repositoriesReducer = (
   // return a Value of Type - RepositoriesState from this function to avoid state errors.
   state: RepositoriesReducerState = initialState,
 
-  // NOTE: 'Type union' can be very long, we can use 'Type Alias' if we want instead.
-  // 'Type Alias' is just a name that represents another Type, similar to variable but for type.
-  // 'Type Alias' is to create New Name for another Type.
-  action:
-    | SearchRepositoriesAction
-    | SearchRepositoriesSuccessAction
-    | SearchRepositoriesErrorAction
+  action: Action
+
   // return type annotation here also for entire reducer
 ): RepositoriesReducerState => {
   // A type guard is some expression that performs a runtime check that guarantees the type in some scope.
@@ -68,11 +82,11 @@ export const repositoriesReducer = (
   // Just like above with if block.
   // We know with 100% certainty that all the 'action' satisfies the above interfaces
   switch (action.type) {
-    case 'search_repositories':
+    case ActionType.SEARCH_REPOSITORIES:
       return { loading: true, error: null, data: [] };
-    case 'search_repositories_success':
+    case ActionType.SEARCH_REPOSITORIES_SUCCESS:
       return { loading: false, error: null, data: action.payload };
-    case 'search_repositories_error':
+    case ActionType.SEARCH_REPOSITORIES_ERROR:
       return { loading: false, error: action.payload, data: [] };
 
     default:
