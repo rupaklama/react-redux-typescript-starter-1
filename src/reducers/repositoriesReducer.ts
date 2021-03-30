@@ -1,3 +1,5 @@
+import { Action, ActionType } from '../actions/repositoriesActions';
+
 // reducer state interface
 export interface RepositoriesReducerState {
   loading: boolean;
@@ -9,40 +11,6 @@ export interface RepositoriesReducerState {
   // array of strings
   data: string[];
 }
-
-// actions interfaces
-interface SearchRepositoriesAction {
-  type: ActionType.SEARCH_REPOSITORIES;
-}
-
-interface SearchRepositoriesSuccessAction {
-  type: ActionType.SEARCH_REPOSITORIES_SUCCESS;
-  payload: string[];
-}
-
-interface SearchRepositoriesErrorAction {
-  type: ActionType.SEARCH_REPOSITORIES_ERROR;
-  payload: string;
-}
-
-// NOTE: 'Type union' can be very long, we can use 'Type Alias' if we want instead.
-// 'Type Alias' is just a name that represents another Type, similar to variable but for type.
-// 'Type Alias' is to create New Name for another Type.
-type Action =
-  | SearchRepositoriesAction
-  | SearchRepositoriesSuccessAction
-  | SearchRepositoriesErrorAction;
-
-// Enums for all action types.
-// Enum is an object for small fixed set of values which are closely related.
-// It's like a SET of some small values.
-export enum ActionType {
-  SEARCH_REPOSITORIES = 'search_repositories',
-  SEARCH_REPOSITORIES_SUCCESS = 'search_repositories_success',
-  SEARCH_REPOSITORIES_ERROR = 'search_repositories_error',
-}
-// Now, we can use this enum 'ActionType' to access all these Action Types rather then writing raw strings
-// which is bad as we are duplicating strings & easily can make typos.
 
 // initial reducer state
 const initialState = {
